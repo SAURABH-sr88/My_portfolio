@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Saurabh Kumar Srivastava - Portfolio</title>
+
+  <style>
+    :root {
+      --nav-height: 72px;
+      --accent: #667eea;
+      --accent-2: #764ba2;
+      --bg: #f7fbff;
+      --muted: #6b7280;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-height) + 12px); }
+    body {
+      font-family: "Segoe UI", Roboto, system-ui, -apple-system, "Helvetica Neue", Arial;
+      background: var(--bg);
+      color: #111827;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    .container { width: 90%; max-width: 1200px; margin: 0 auto; }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--nav-height);
+      display: flex;
+      align-items: center;
+      z-index: 1200;
+      backdrop-filter: blur(6px);
+      background: rgba(255,255,255,0.95);
+      box-shadow: 0 6px 18px rgba(15,23,42,0.06);
+    }
+    nav .nav-inner { width: 100%; display:flex; align-items:center; justify-content:space-between; gap: 1rem; }
+    .logo { font-weight: 700; color: var(--accent); font-size: 1.2rem; letter-spacing: 0.4px; }
+    .nav-links { display: flex; gap: 20px; align-items: center; list-style: none; }
+    .nav-links a { color: #111827; text-decoration: none; font-weight:500; padding: 8px 10px; border-radius: 6px; }
+    .nav-links a:hover { color: white; background: linear-gradient(90deg,var(--accent),var(--accent-2)); box-shadow: 0 4px 14px rgba(102,126,234,0.18); }
+
+    /* Mobile menu button */
+    .menu-btn { display: none; background: transparent; border: none; font-size: 1.1rem; cursor: pointer; padding: 8px; }
+
+    /* HERO */
+    .hero {
+      min-height: calc(100vh - var(--nav-height));
+      display: grid;
+      place-items: center;
+      text-align: center;
+      color: #fff;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2)); /* strong gradient for clarity */
+      padding: 28px 16px;
+    }
+    .hero-inner { max-width: 980px; }
+    .hero h1 { font-size: 3.2rem; line-height: 1.02; margin-bottom: 10px; color: #fff; font-weight:800; }
+    .hero .subtitle { font-size: 1.15rem; color: rgba(255,255,255,0.92); margin-bottom: 14px; font-weight:600; }
+    .hero p { max-width: 760px; margin: 0 auto 22px; color: rgba(255,255,255,0.88); font-size: 1rem; }
+
+    .cta-buttons { display:flex; gap: 12px; justify-content:center; flex-wrap:wrap; }
+    .btn { padding: 10px 18px; border-radius: 999px; display:inline-block; font-weight:700; text-decoration:none; cursor:pointer; transition: transform 180ms ease, box-shadow 180ms ease; border: none; }
+    .btn-primary { background: #fff; color: var(--accent); }
+    .btn-outline { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,0.26); }
+    .btn-resume { background: #0f1724; color: #fff; }
+
+    .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(2,6,23,0.12); }
+
+    /* Sections */
+    section { padding: 72px 0; background: white; }
+    section .container { padding-top: 10px; padding-bottom: 10px; }
+    .section-title { text-align:center; font-size: 2rem; margin-bottom: 22px; color: #0f1724; }
+
+    /* Small hero spacing so fixed nav doesn't cover content when clicking nav links */
+    section { scroll-margin-top: calc(var(--nav-height) + 12px); }
+
+    /* ABOUT */
+    .about { display:grid; grid-template-columns: 1fr 1.4fr; gap: 28px; align-items: center; }
+    .avatar {
+      width: 260px; height: 260px; border-radius: 50%;
+      background: linear-gradient(135deg,var(--accent),var(--accent-2));
+      color: #fff; display:grid; place-items:center; font-weight:800; font-size: 56px; margin: 0 auto;
+      box-shadow: 0 18px 40px rgba(102,126,234,0.14);
+    }
+    .about p { color: var(--muted); font-size: 1rem; line-height:1.65; }
+
+    /* TIMELINE / EXPERIENCE */
+    .timeline { max-width: 900px; margin: 0 auto; display:flex; flex-direction:column; gap: 18px; }
+    .timeline-item {
+      background: #fff; border-radius: 12px; padding: 18px; box-shadow: 0 8px 28px rgba(12,14,18,0.06);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .timeline-item:hover { transform: translateY(-6px); box-shadow: 0 18px 48px rgba(12,14,18,0.08); }
+    .timeline-header { display:flex; justify-content:space-between; gap: 12px; align-items:flex-start; }
+    .job-title { color: var(--accent); font-weight:700; font-size: 1.05rem; }
+    .company { color: var(--muted); font-size: 0.95rem; }
+
+    /* Skills */
+    .skills-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 14px; }
+    .skill-card { background:#f8fafc; padding: 16px; border-radius: 10px; text-align:center; }
+    .skill-card h4 { color: var(--accent); margin-bottom: 10px; }
+    .skill-tags { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; }
+
+    /* Projects */
+    .projects-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap: 18px; }
+    .project { background:#fff; border-radius:10px; overflow:hidden; box-shadow: 0 8px 28px rgba(2,6,23,0.04); }
+    .project .head { padding: 16px; background: linear-gradient(90deg,var(--accent),var(--accent-2)); color: #fff; font-weight:700; }
+    .project .body { padding: 14px; color: var(--muted); }
+
+    /* Contact */
+    .contact-grid { display:grid; grid-template-columns: 1fr 1fr; gap: 22px; align-items:start; }
+    .contact-card { background:#f8fafc; padding:18px; border-radius:10px; }
+    .contact-form { display:flex; flex-direction:column; gap:12px; }
+    .input, textarea { padding:12px; border:1px solid #e6e9ef; border-radius:8px; font-size:0.98rem; width:100%; }
+    .submit { background: var(--accent); color: #fff; border:none; padding: 10px 14px; border-radius: 8px; cursor:pointer; font-weight:700; }
+
+    /* Footer */
+    footer { padding: 28px 0; background: #0b1220; color: #fff; text-align:center; }
+
+    /* Reveal animation initial state */
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .about { grid-template-columns: 1fr; text-align: center; }
+      .avatar { width: 200px; height: 200px; font-size: 42px; }
+      .hero h1 { font-size: 2.4rem; }
+    }
+    @media (max-width: 768px) {
+      .nav-links { display: none; position: fixed; left:0; right:0; top: var(--nav-height); background: rgba(255,255,255,0.995); flex-direction: column; gap: 8px; padding: 12px; box-shadow: 0 10px 30px rgba(2,6,23,0.06); }
+      .nav-links.active { display:flex; }
+      .menu-btn { display: inline-flex; align-items:center; justify-content:center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="container nav-inner">
+      <div class="logo"><a href="#home" style="color:inherit; text-decoration:none;">SK</a></div>
+
+      <ul class="nav-links" id="navLinks" role="menu" aria-label="Main navigation">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+
+      <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="navLinks" title="Toggle menu">
+        ☰
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header id="home" class="hero">
+    <div class="hero-inner container reveal visible">
+      <h1>Saurabh Kumar Srivastava</h1>
+      <div class="subtitle">Software Engineer</div>
+      <p>Passionate about building scalable applications and AI-powered solutions. Experience in full-stack development, system design, and AI agent workflows.</p>
+
+      <div class="cta-buttons">
+        <a class="btn btn-primary" href="#contact">Get In Touch</a>
+        <a class="btn btn-outline" href="#projects">View My Work</a>
+        <!-- Replace resume.pdf with your hosted resume path or URL -->
+        <a class="btn btn-resume" href="Saurabh_resume.pdf" download>Download Resume</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ABOUT -->
+  <section id="about" class="reveal">
+    <div class="container">
+      <h2 class="section-title">About Me</h2>
+      <div class="about">
+        <div class="avatar">SK</div>
+        <div>
+          <p>
+            Hello! I'm Saurabh — a Software Engineer with hands-on internships at IBM working on AI Agent workflows and web systems.
+            I work primarily with Java, Spring Boot, React and enjoy designing scalable systems and implementing production-ready features.
+          </p>
+          <p style="margin-top:12px; color:var(--muted)">
+            During internships I improved website performance, built reusable components, contributed in Agile teams, and developed AI-driven prototypes.
+            Currently pursuing a B.Tech in Computer Science — always learning and shipping projects.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience" class="reveal">
+    <div class="container">
+      <h2 class="section-title">Professional Experience</h2>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-header">
+            <div>
+              <div class="job-title">AI Agent Architect Trainee</div>
+              <div class="company">IBM — New Delhi, India</div>
+            </div>
+            <div class="date" style="background:var(--accent); color:#fff; padding:6px 12px; border-radius:20px; font-weight:700;">Jul 2025 – Aug 2025</div>
+          </div>
+          <ul style="margin-top:10px; color:var(--muted);">
+            <li>Built AI agent workflows using LLMs, prompt engineering, and automation for real-world tasks.</li>
+            <li>Developed mini projects on task automation and intelligent assistants.</li>
+            <li>Worked on model evaluation, ethical practices, and deployment aspects.</li>
+          </ul>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-header">
+            <div>
+              <div class="job-title">Software Engineering Intern</div>
+              <div class="company">IBM — Gurugram, India</div>
+            </div>
+            <div class="date" style="background:var(--accent); color:#fff; padding:6px 12px; border-radius:20px; font-weight:700;">Jun 2024 – Aug 2024</div>
+          </div>
+          <ul style="margin-top:10px; color:var(--muted);">
+            <li>Enhanced site performance (~20%), authored reusable UI components and fixes.</li>
+            <li>Resolved critical bugs, improved UX and cross-browser compatibility.</li>
+            <li>Participated in Agile sprints and technical design discussions.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills" class="reveal">
+    <div class="container">
+      <h2 class="section-title">Skills & Technologies</h2>
+
+      <div class="skills-grid">
+        <div class="skill-card">
+          <h4>Web & Frontend</h4>
+          <div class="skill-tags">
+            <span>HTML</span><span>CSS</span><span>JavaScript</span><span>React</span>
+          </div>
+        </div>
+
+        <div class="skill-card">
+          <h4>Backend</h4>
+          <div class="skill-tags">
+            <span>Java</span><span>Spring Boot</span><span>REST APIs</span><span>JWT</span>
+          </div>
+        </div>
+
+        <div class="skill-card">
+          <h4>Databases</h4>
+          <div class="skill-tags">
+            <span>MySQL</span><span>Postgres</span><span>MongoDB</span><span>Redis</span>
+          </div>
+        </div>
+
+        <div class="skill-card">
+          <h4>Tools & Testing</h4>
+          <div class="skill-tags">
+            <span>Git</span><span>Postman</span><span>JUnit</span><span>Swagger</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" class="reveal">
+    <div class="container">
+      <h2 class="section-title">Featured Projects</h2>
+
+      <div class="projects-grid">
+        <article class="project">
+          <div class="head">EventSphere</div>
+          <div class="body">
+            <p style="margin:0 0 8px 0; color:var(--muted)">Secure, scalable event & ticketing platform with real-time availability, recommendations and seat booking.</p>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <span style="background:#eef2ff;padding:6px 8px;border-radius:8px;font-size:0.86rem;">Spring Boot</span>
+              <span style="background:#eef2ff;padding:6px 8px;border-radius:8px;font-size:0.86rem;">MongoDB</span>
+              <span style="background:#eef2ff;padding:6px 8px;border-radius:8px;font-size:0.86rem;">JWT</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="project">
+          <div class="head">Journal App</div>
+          <div class="body">
+            <p style="margin:0 0 8px 0; color:var(--muted)">Journaling app with auth, sentiment analysis, caching and OAuth integration.</p>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <span style="background:#eef2ff;padding:6px 8px;border-radius:8px;font-size:0.86rem;">Spring Boot</span>
+              <span style="background:#eef2ff;padding:6px 8px;border-radius:8px;font-size:0.86rem;">Redis</span>
+              <span style="background:#eef2ff;padding:6px 8px;border-radius:8px;font-size:0.86rem;">OAuth2</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="project">
+          <div class="head">Personal Portfolio</div>
+          <div class="body">
+            <p style="margin:0 0 8px 0; color:var(--muted)">Responsive portfolio site showcasing projects, skills and contact details.</p>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <span style="background:#eef2ff;padding:6px 8px;border-radius:8px;font-size:0.86rem;">HTML</span>
+              <span style="background:#eef2ff;padding:6px 8px;border-radius:8px;font-size:0.86rem;">CSS</span>
+              <span style="background:#eef2ff;padding:6px 8px;border-radius:8px;font-size:0.86rem;">JavaScript</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="reveal">
+    <div class="container">
+      <h2 class="section-title">Get In Touch</h2>
+
+      <div class="contact-grid">
+        <div class="contact-card">
+          <h3 style="color:var(--accent); margin-bottom:8px;">Contact Info</h3>
+          <p style="color:var(--muted); margin-bottom:10px;">Email: <strong>saura<b>bh.srivastava1024@gmail.com</b></strong></p>
+          <p style="color:var(--muted); margin-bottom:10px;">Phone: <strong>+91 6398760018</strong></p>
+          <p style="color:var(--muted); margin-bottom:10px;">Location: Ghaziabad, India</p>
+          <div style="margin-top:12px;">
+            <a href="https://www.linkedin.com/in/saurabhsrivastava26/" style="margin-right:10px; color:var(--accent); text-decoration:none;">LinkedIn</a>
+            <a href="https://github.com/SAURABH-sr88" style="color:var(--accent); text-decoration:none;">GitHub</a>
+          </div>
+        </div>
+
+        <form class="contact-form" onsubmit="return handleContactSubmit(event);" style="background:#fff; padding:18px; border-radius:10px; box-shadow: 0 8px 30px rgba(2,6,23,0.04);">
+          <label>
+            <div style="font-weight:600; margin-bottom:6px;">Name</div>
+            <input class="input" type="text" id="cname" required placeholder="Your name" />
+          </label>
+          <label>
+            <div style="font-weight:600; margin-bottom:6px;">Email</div>
+            <input class="input" type="email" id="cemail" required placeholder="Your email" />
+          </label>
+          <label>
+            <div style="font-weight:600; margin-bottom:6px;">Message</div>
+            <textarea class="input" id="cmsg" rows="5" required placeholder="Brief message"></textarea>
+          </label>
+          <button class="submit" type="submit">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div style="margin-bottom:8px;">
+        <a style="color:#fff; margin-right:12px; text-decoration:none;" href="#">LinkedIn</a>
+        <a style="color:#fff; margin-right:12px; text-decoration:none;" href="#">GitHub</a>
+        <a style="color:#fff; text-decoration:none;" href="mailto:saurabh.srivastava1024@gmail.com">Email</a>
+      </div>
+      <div style="font-size:0.95rem; color:rgba(255,255,255,0.85)">© 2025 Saurabh Kumar Srivastava. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    const menuBtn = document.getElementById('menuBtn');
+    const navLinks = document.getElementById('navLinks');
+    menuBtn.addEventListener('click', () => {
+      const expanded = menuBtn.getAttribute('aria-expanded') === 'true';
+      menuBtn.setAttribute('aria-expanded', String(!expanded));
+      navLinks.classList.toggle('active');
+    });
+
+    // Close mobile menu when a link is clicked
+    document.querySelectorAll('#navLinks a').forEach(a => {
+      a.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+        menuBtn.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    // Reveal on scroll using IntersectionObserver
+    const revealElements = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          // optionally unobserve to improve performance
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    revealElements.forEach(el => io.observe(el));
+
+    // Simple contact form handler (replace with backend call if needed)
+    function handleContactSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('cname').value.trim();
+      const email = document.getElementById('cemail').value.trim();
+      const msg = document.getElementById('cmsg').value.trim();
+      if (!name || !email || !msg) {
+        alert('Please fill all fields.');
+        return false;
+      }
+      // For demo: show confirmation and reset
+      alert('Thanks, ' + name + '! Your message has been received. I will get back to you soon.');
+      e.target.reset();
+      return false;
+    }
+
+    // Ensure hero content appears promptly (force visible)
+    document.querySelectorAll('.hero .reveal').forEach(el => el.classList.add('visible'));
+  </script>
+</body>
+</html>
